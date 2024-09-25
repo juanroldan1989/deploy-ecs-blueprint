@@ -4,6 +4,8 @@
 - Steps for deployment
 - Blueprint should work with any Docker Image
 
+Github reference: https://github.com/docker/awesome-compose/tree/master/nginx-wsgi-flask
+
 ## Showcase ECS Working modes
 
 - EC2: Scenarios where works best. Pros & Cons.

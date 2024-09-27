@@ -23,8 +23,8 @@ provider "aws" {
   default_tags {
     tags = {
       owner       = "Juan Roldan"
-      project     = "AWS ECS Cluster"
-      cost-center = "AWS ECS Billing"
+      project     = "AWS ECS EC2 Cluster"
+      cost-center = "AWS ECS EC2 Billing"
       environment = var.env
       app_name    = var.app_name
       Name        = "Managed by Terraform"

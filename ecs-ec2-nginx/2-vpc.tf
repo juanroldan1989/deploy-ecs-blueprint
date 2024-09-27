@@ -1,8 +1,11 @@
 resource "aws_vpc" "main" {
-  cidr_block           = var.vpc_cidr
+  cidr_block = var.vpc_cidr
+
+  enable_dns_support   = true
   enable_dns_hostnames = true
+
   tags = {
-    name = "main"
+    Name = "${var.app_name}-${var.env}-vpc-main"
   }
 }
 
@@ -45,22 +48,45 @@ resource "aws_route_table_association" "subnet2_route" {
   route_table_id = aws_route_table.route_table.id
 }
 
-# This is not the best practice and should only be done for working through this example.
-# Tighter rules should be implemented when in production.
 resource "aws_security_group" "security_group" {
-  name   = "ecs-security-group"
-  vpc_id = aws_vpc.main.id
+  name        = "ecs-security-group"
+  description = "Allow SSH and Web traffic"
+  vpc_id      = aws_vpc.main.id
 
   ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow Web"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow HTTPS"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "All traffic from within VPC"
     from_port   = 0
     to_port     = 0
-    protocol    = -1
-    self        = "false"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "any"
+    protocol    = "-1"
+    cidr_blocks = [var.vpc_cidr]
   }
 
   egress {
+    description = "All egress traffic"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"

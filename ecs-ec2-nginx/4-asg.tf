@@ -4,6 +4,10 @@ resource "aws_autoscaling_group" "ecs_asg" {
   max_size            = 4
   min_size            = 1
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   launch_template {
     id      = aws_launch_template.ecs_lt.id
     version = "$Latest"

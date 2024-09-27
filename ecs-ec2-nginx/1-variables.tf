@@ -10,7 +10,7 @@ variable "env" {
 
 variable "app_name" {
   type    = string
-  default = "Sample ECS App"
+  default = "sample-ecs-ec2-app"
 }
 
 variable "vpc_cidr" {

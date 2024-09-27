@@ -89,4 +89,12 @@ Requests/sec:   1345.29
 Transfer/sec:      1.09MB
 ```
 
-# AWS ECS (FARGATE) AutoScaling
+# AWS ECS (FARGATE)
+
+## AutoScaling
+
+![Screenshot 2024-09-27 at 20 56 26](https://github.com/user-attachments/assets/863f879d-0460-4e1e-b03c-db883ea49283)
+
+## Chaos Engineering
+
+https://medium.com/aws-arena/aws-fargate-chaos-monkey-78faa8923af6

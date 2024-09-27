@@ -88,3 +88,5 @@ Running 1m test @ http://ecs-alb-1948815992.us-east-1.elb.amazonaws.com/
 Requests/sec:   1345.29
 Transfer/sec:      1.09MB
 ```
+
+# AWS ECS (FARGATE) AutoScaling

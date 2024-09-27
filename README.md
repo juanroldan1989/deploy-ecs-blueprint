@@ -1,5 +1,7 @@
 # Deploy ECS Blueprint
 
+Reference: https://spacelift.io/blog/terraform-ecs
+
 - List of components to be deployed
 - Steps for deployment
 - Blueprint should work with any Docker Image
@@ -15,4 +17,3 @@ Github reference: https://github.com/docker/awesome-compose/tree/master/nginx-ws
 
 1. Single Python App without database.
 2. Single Python App with database.
-   

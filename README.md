@@ -17,3 +17,74 @@ Github reference: https://github.com/docker/awesome-compose/tree/master/nginx-ws
 
 1. Single Python App without database.
 2. Single Python App with database.
+
+## Build Pipeline
+
+1. Changes are pushed into `main` branch (via pull-request)
+2. `ECR` is created if it doesn't exist already.
+
+```ruby
+resource "aws_ecr_repository" "image_repo" {
+  name                 = var.name
+  image_tag_mutability = "IMMUTABLE"
+  encryption_configuration {
+    encryption_type = "KMS"
+    kms_key         = aws_kms_key.custom_kms_key.arn
+  }
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+}
+```
+
+3. Docker `build` is triggered.
+4. New Docker image is `tagged` and `pushed`.
+5. `terraform apply` command is triggered using new `IMAGE_TAG` - https://skundunotes.com/2024/05/06/continuous-deployment-of-amazon-ecs-service-using-terraform-and-github-actions/
+
+## Setup Terraform `backend`
+
+https://github.com/kunduso/add-aws-ecr-ecs-fargate/blob/main/deploy/backend.tf
+
+```
+terraform {
+  backend "s3" {
+    bucket  = "kunduso-terraform-remote-bucket"
+    encrypt = true
+    key     = "tf/add-aws-ecr-ecs-fargate/deploy-ecs.tfstate"
+    region  = "us-east-2"
+  }
+}
+```
+
+# Load Testing results
+
+```
+$ brew install wrk
+```
+
+```ruby
+$ wrk -t4 -c1000 -d60s http://ecs-alb-1948815992.us-east-1.elb.amazonaws.com/
+Running 1m test @ http://ecs-alb-1948815992.us-east-1.elb.amazonaws.com/
+  4 threads and 1000 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   133.31ms   67.79ms 952.37ms   93.81%
+    Req/Sec   357.66    160.09   666.00     65.64%
+  82281 requests in 1.00m, 66.93MB read
+  Socket errors: connect 754, read 0, write 0, timeout 0
+Requests/sec:   1370.80
+Transfer/sec:      1.12MB
+```
+
+```
+$ wrk -t4 -c10000 -d60s http://ecs-alb-1948815992.us-east-1.elb.amazonaws.com/
+Running 1m test @ http://ecs-alb-1948815992.us-east-1.elb.amazonaws.com/
+  4 threads and 10000 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   133.73ms   66.60ms 882.47ms   92.01%
+    Req/Sec   374.00    297.19     1.01k    65.79%
+  80857 requests in 1.00m, 65.78MB read
+  Socket errors: connect 9754, read 0, write 0, timeout 0
+Requests/sec:   1345.29
+Transfer/sec:      1.09MB
+```

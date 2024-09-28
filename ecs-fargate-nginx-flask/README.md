@@ -7,8 +7,8 @@ https://github.com/docker/awesome-compose/tree/master/nginx-wsgi-flask
 ```ruby
 $ cd nginx
 
-$ docker build -t juanroldan1989/nginx .
-$ docker push juanroldan1989/nginx:latest
+$ docker build -t juanroldan1989/custom-nginx .
+$ docker push juanroldan1989/custom-nginx:latest
 ```
 
 2. Build `flask` image and push to Docker Hub.

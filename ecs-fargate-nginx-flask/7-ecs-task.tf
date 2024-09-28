@@ -16,6 +16,9 @@ resource "aws_ecs_task_definition" "custom_nginx_flask_task" {
       essential   = true
       networkMode = "awsvpc"
       command     = ["/app/start.sh"]
+      environment = [
+        { "name" : "FLASK_SERVER_ADDR", "value" : "flask-app:8000" }
+      ]
       logConfiguration = {
         logDriver = "awslogs"
         options = {

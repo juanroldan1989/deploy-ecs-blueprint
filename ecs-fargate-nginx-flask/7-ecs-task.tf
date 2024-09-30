@@ -15,7 +15,11 @@ resource "aws_ecs_task_definition" "custom_nginx_flask_task" {
       memory      = 256
       essential   = true
       networkMode = "awsvpc"
-      command     = ["/app/start.sh"]
+
+      # To allow nginx to run standard `docker-entrypoint.sh` commands
+      # and solve issue: nginx: [emerg] unexpected end of parameter, expecting ";" in command line
+      # command     = ["/app/start.sh"]
+
       environment = [
         { "name" : "FLASK_SERVER_ADDR", "value" : "flask-app:8000" }
       ]

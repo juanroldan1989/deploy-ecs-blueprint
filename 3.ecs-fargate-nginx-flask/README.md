@@ -65,8 +65,8 @@ alb_dns_name = "ecs-alb-<account-id>.<region-id>.elb.amazonaws.com"
 
 - `/`
 - `/info`
-- `cache-me`
-- `health-check`
+- `/cache-me`
+- `/health-check`
 
 ## ECS Service (update/deployment)
 
@@ -171,13 +171,12 @@ wrk -t4 -c10000 -d300s http://ecs-alb-1596587575.us-east-1.elb.amazonaws.com/inf
 Running 5m test @ http://ecs-alb-1596587575.us-east-1.elb.amazonaws.com/info
   4 threads and 10000 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency   862.29ms   77.41ms   1.45s    84.76%
-    Req/Sec    71.63     29.74   242.00     68.03%
-  85439 requests in 5.00m, 35.85MB read
+    Latency   527.77ms   62.54ms 951.82ms   80.04%
+    Req/Sec   117.84     69.88   584.00     65.65%
+  139654 requests in 5.00m, 38.89MB read
   Socket errors: connect 9754, read 0, write 0, timeout 0
-  Non-2xx or 3xx responses: 85439
-Requests/sec:    284.73
-Transfer/sec:    122.34KB
+Requests/sec:    465.35
+Transfer/sec:    132.70KB
 ```
 
 ![Screenshot 2024-09-30 at 13 33 36](https://github.com/user-attachments/assets/160b9f43-e588-4c50-a015-ff5e8ceaf430)

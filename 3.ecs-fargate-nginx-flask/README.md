@@ -31,7 +31,9 @@ $ docker build -t juanroldan1989/flask-app .
 $ docker push juanroldan1989/flask-app:latest
 ```
 
-## ECS Service deploy
+## ECS Service
+
+![Screenshot 2024-09-30 at 12 55 06](https://github.com/user-attachments/assets/f258d3fb-09d2-4e01-b64b-9ebc1c42dcdf)
 
 ### Before
 

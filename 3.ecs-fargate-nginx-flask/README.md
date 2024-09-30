@@ -54,10 +54,10 @@ alb_dns_name = "ecs-alb-<account-id>.<region-id>.elb.amazonaws.com"
 
 4. Available endpoints are:
 
-- `/`
-- `/info`
-- `/cache-me`
-- `/health-check`
+- `GET /`
+- `GET /info`
+- `GET /cache-me`
+- `GET /health-check`
 
 ## ECS Service (update/deployment)
 

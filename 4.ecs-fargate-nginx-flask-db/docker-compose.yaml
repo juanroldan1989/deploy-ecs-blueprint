@@ -38,6 +38,10 @@ services:
     networks:
       - backnet
       - frontnet
+    environment:
+      - DB_HOST=db
+      - DB_NAME=example
+      - DB_USER=root
     depends_on:
       db:
         condition: service_healthy

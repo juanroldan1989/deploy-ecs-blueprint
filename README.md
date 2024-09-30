@@ -89,6 +89,17 @@ Transfer/sec:      1.09MB
 
 # AWS ECS (FARGATE)
 
+## Force Task replacement
+
+- Approach 1:
+
+```
+$ terraform apply --auto-approve -replace="aws_ecs_task_definition.custom_nginx_flask_task"
+```
+
+- Approach 2:
+  https://github.com/hashicorp/terraform-provider-aws/issues/13528#issuecomment-797631866
+
 ## AutoScaling
 
 ![Screenshot 2024-09-27 at 20 56 26](https://github.com/user-attachments/assets/863f879d-0460-4e1e-b03c-db883ea49283)

@@ -89,7 +89,7 @@ alb_dns_name = "ecs-alb-<account-id>.<region-id>.elb.amazonaws.com"
 
 ![Screenshot 2024-09-30 at 12 22 08](https://github.com/user-attachments/assets/f1d66f78-7f2b-4226-9811-4bb96f6969be)
 
-### ECS Task replacement (force on deployment)
+## ECS Task replacement (force on deployment)
 
 - Approach 1:
 

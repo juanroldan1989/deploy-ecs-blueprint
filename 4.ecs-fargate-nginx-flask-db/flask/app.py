@@ -4,12 +4,18 @@ import mysql.connector as mariadb
 
 class DBManager:
   def __init__(self, host="db", database="example", user="root", password_file=None):
-    pf = open(password_file, 'r')
+    try:
+      with open(password_file, 'r') as pf:
+        password = pf.read().strip()
+    except FileNotFoundError:
+      # TODO: implement KMS to provision DB password - "${aws::resource::kms}"
+      password = 'db-78n9n'
+
     self.connection = mariadb.connect(
       host=os.getenv('DB_HOST', host),  # database service/container
       database=os.getenv('DB_NAME', database),
       user=os.getenv('DB_USER', user),
-      password=pf.read(),
+      password=password,
       auth_plugin='mysql_native_password'
     )
     pf.close()

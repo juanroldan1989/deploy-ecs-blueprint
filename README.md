@@ -1,10 +1,5 @@
 # Deploy ECS Blueprint
 
-Reference:
-
-- https://spacelift.io/blog/terraform-ecs
-- https://github.com/docker/awesome-compose
-
 ## [ECS (FARGATE) Nginx](https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/2.ecs-fargate-nginx)
 
 ### Service AutoScaling
@@ -70,3 +65,8 @@ terraform {
 ### Chaos Engineering
 
 https://medium.com/aws-arena/aws-fargate-chaos-monkey-78faa8923af6
+
+## References
+
+- https://spacelift.io/blog/terraform-ecs
+- https://github.com/docker/awesome-compose

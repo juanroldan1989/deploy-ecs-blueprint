@@ -64,15 +64,15 @@ alb_dns_name = "ecs-alb-<account-id>.<region-id>.elb.amazonaws.com"
 
 ## ECS Service (update/deployment)
 
-### Before
-
 ### During
 
-1. New ECS Task Version is registered and launched
-
-2. Previous ECS Task Version becomes `inactive`
+![Screenshot 2024-09-30 at 20 50 16](https://github.com/user-attachments/assets/2e0b1579-4d1f-4fc8-88db-52434b79de83)
 
 ### After
+
+![Screenshot 2024-09-30 at 20 51 10](https://github.com/user-attachments/assets/d1e79a33-3683-41f3-9479-41ac4a35cf9c)
+
+![Screenshot 2024-09-30 at 20 51 28](https://github.com/user-attachments/assets/285fee08-54f3-4dc6-b5e6-d467735ba365)
 
 ## ECS Task replacement (force on deployment)
 
@@ -84,3 +84,33 @@ $ terraform apply --auto-approve -replace="aws_ecs_task_definition.custom_nginx_
 
 - Approach 2:
   https://github.com/hashicorp/terraform-provider-aws/issues/13528#issuecomment-797631866
+
+## Load Testing
+
+```ruby
+$ brew install wrk
+```
+
+### Flask App - `/` endpoint
+
+```ruby
+$ wrk -t4 -c10000 -d300s http://ecs-alb-1190038999.us-east-1.elb.amazonaws.com
+
+Running 5m test @ http://ecs-alb-1190038999.us-east-1.elb.amazonaws.com
+  4 threads and 10000 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   744.19ms  159.61ms   1.60s    81.43%
+    Req/Sec    78.60     40.86   515.00     70.56%
+  92909 requests in 5.00m, 26.58MB read
+  Socket errors: connect 9754, read 4, write 0, timeout 0
+Requests/sec:    309.61
+Transfer/sec:     90.70KB
+```
+
+### Flask App - `/articles/<id>` endpoint
+
+Test with tool to request random article IDs (e.g.:2,4,1,3)
+
+```ruby
+
+```

@@ -22,10 +22,17 @@ class DBManager:
 
   def query_titles(self):
     self.cursor.execute('SELECT title FROM blog')
-    rec = []
+    titles = []
     for c in self.cursor:
-      rec.append(c[0])
-    return rec
+      titles.append(c[0])
+    return titles
+
+  def get_title(self, id):
+    self.cursor.execute(f"SELECT title FROM blog WHERE id = {id}")
+    titles = []
+    for c in self.cursor:
+      titles.append(c[0])
+    return titles[0]
 
 app = Flask(__name__)
 conn = None
@@ -36,9 +43,17 @@ def listBlog():
   if not conn:
     conn = DBManager(password_file='/run/secrets/db-password')
     conn.populate_db()
-  rec = conn.query_titles()
-
+  titles = conn.query_titles()
   response = ''
-  for c in rec:
-    response = response  + '<div>   Hello  ' + c + '</div>'
+  for title in titles:
+    response = response  + '<h2>   Article  ' + title + '</h2>'
+  return response
+
+@app.route('/<int:title_id>')
+def getTitle(title_id):
+  global conn
+  if not conn:
+    conn = DBManager(password_file='/run/secrets/db-password')
+  title = conn.get_title(id=title_id)
+  response = f"<h1> Article - {title} </h1>"
   return response

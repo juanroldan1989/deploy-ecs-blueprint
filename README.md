@@ -74,7 +74,7 @@ Requests/sec:   1370.80
 Transfer/sec:      1.12MB
 ```
 
-```
+```ruby
 $ wrk -t4 -c10000 -d60s http://ecs-alb-1948815992.us-east-1.elb.amazonaws.com/
 Running 1m test @ http://ecs-alb-1948815992.us-east-1.elb.amazonaws.com/
   4 threads and 10000 connections
@@ -88,17 +88,6 @@ Transfer/sec:      1.09MB
 ```
 
 # AWS ECS (FARGATE)
-
-## Force Task replacement
-
-- Approach 1:
-
-```
-$ terraform apply --auto-approve -replace="aws_ecs_task_definition.custom_nginx_flask_task"
-```
-
-- Approach 2:
-  https://github.com/hashicorp/terraform-provider-aws/issues/13528#issuecomment-797631866
 
 ## AutoScaling
 

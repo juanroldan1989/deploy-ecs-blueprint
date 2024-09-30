@@ -1,5 +1,11 @@
 # Deploy ECS Blueprint
 
+## Pricing
+
+- With the EC2 launch, type billing is based on the cost of the underlying EC2 instances. This allows you to optimize price by taking advantage of billing models such as spot instances (bid a low price for an instance), or reserved instances (get a flat discount for committing to an instance for a certain period). However, it is your responsibility to make sure that your containers are densely packed onto instances to get the best use out of them, otherwise, you will be wasting money.
+
+- With the AWS Fargate launch type billing is based on how many CPU cores, and gigabytes of memory your task requires, per second. You only ever pay for what your task uses, no more paying for EC2 capacity that goes unused.
+
 ## [ECS (FARGATE) Nginx](https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/2.ecs-fargate-nginx)
 
 ### Service AutoScaling

@@ -55,9 +55,32 @@ alb_dns_name = "ecs-alb-<account-id>.<region-id>.elb.amazonaws.com"
 4. Available endpoints are:
 
 - `GET /` -> Lists all articles
-  
+
 ![Screenshot 2024-09-30 at 22 25 46](https://github.com/user-attachments/assets/b879923f-6fac-443d-9e83-fb141d460068)
 
 - `GET /<article-id>` -> Requests an specific article
-  
+
 ![Screenshot 2024-09-30 at 22 25 58](https://github.com/user-attachments/assets/52dab504-2f0a-4db1-8884-e383e9771af3)
+
+## ECS Service (update/deployment)
+
+### Before
+
+### During
+
+1. New ECS Task Version is registered and launched
+
+2. Previous ECS Task Version becomes `inactive`
+
+### After
+
+## ECS Task replacement (force on deployment)
+
+- Approach 1:
+
+```
+$ terraform apply --auto-approve -replace="aws_ecs_task_definition.custom_nginx_flask_task"
+```
+
+- Approach 2:
+  https://github.com/hashicorp/terraform-provider-aws/issues/13528#issuecomment-797631866

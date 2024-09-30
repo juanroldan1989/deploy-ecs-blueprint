@@ -131,6 +131,7 @@ $ brew install wrk
 
 ```ruby
 $ wrk -t4 -c10000 -d300s http://ecs-alb-1596587575.us-east-1.elb.amazonaws.com/
+
 Running 5m test @ http://ecs-alb-1596587575.us-east-1.elb.amazonaws.com/
   4 threads and 10000 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
@@ -142,4 +143,23 @@ Requests/sec:    533.07
 Transfer/sec:     86.94KB
 ```
 
+![Screenshot 2024-09-30 at 13 08 44](https://github.com/user-attachments/assets/f0bba198-b784-4163-9f0c-6df8aeb1d9b1)
+
 ### Flask App - `/info` endpoint
+
+```ruby
+wrk -t4 -c10000 -d300s http://ecs-alb-1596587575.us-east-1.elb.amazonaws.com/info
+
+Running 5m test @ http://ecs-alb-1596587575.us-east-1.elb.amazonaws.com/info
+  4 threads and 10000 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   862.29ms   77.41ms   1.45s    84.76%
+    Req/Sec    71.63     29.74   242.00     68.03%
+  85439 requests in 5.00m, 35.85MB read
+  Socket errors: connect 9754, read 0, write 0, timeout 0
+  Non-2xx or 3xx responses: 85439
+Requests/sec:    284.73
+Transfer/sec:    122.34KB
+```
+
+![Screenshot 2024-09-30 at 13 33 36](https://github.com/user-attachments/assets/160b9f43-e588-4c50-a015-ff5e8ceaf430)

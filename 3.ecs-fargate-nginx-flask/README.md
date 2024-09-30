@@ -11,7 +11,21 @@
 - AWS Graphical description:
   https://containersonaws.com/pattern/nginx-reverse-proxy-sidecar-ecs-fargate-task
 
-## Docker Images (build/push)
+## Docker Compose
+
+```ruby
+$ docker-compose up
+```
+
+Access: `http://localhost:8000`
+
+1. Apply changes
+2. Update images `docker-compose build`
+3. Run `docker-compose up` again
+
+## Provision Infrastructure
+
+### Docker Images (build/push)
 
 1. Build `nginx` image and push to Docker Hub.
 
@@ -31,7 +45,7 @@ $ docker build -t juanroldan1989/flask-app .
 $ docker push juanroldan1989/flask-app:latest
 ```
 
-## Provision Infrascture
+### Terraform
 
 1. Change dir to a project `ecs-fargate-nginx-flask`
 2. Run commands:

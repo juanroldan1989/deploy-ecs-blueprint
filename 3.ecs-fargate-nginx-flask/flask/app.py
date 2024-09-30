@@ -13,11 +13,13 @@ def cache():
 @app.route('/info')
 def info():
 
+	# print("request.headers: ", request.headers)
+
 	resp = {
-		'connecting_ip': request.headers['X-Real-IP'],
-		'proxy_ip': request.headers['X-Forwarded-For'],
-		'host': request.headers['Host'],
-		'user-agent': request.headers['User-Agent']
+		'connecting_ip': request.headers.get('X-Real-IP'),
+		'proxy_ip': request.headers.get('X-Forwarded-For'),
+		'host': request.headers.get('Host'),
+		'user-agent': request.headers.get('User-Agent')
 	}
 
 	return jsonify(resp)

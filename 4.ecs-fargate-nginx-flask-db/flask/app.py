@@ -1,10 +1,10 @@
 from flask import Flask
-import mysql.connector
+import mysql.connector as mariadb
 
 class DBManager:
-  def __init__(self, database='example', host="db", user="root", password_file=None):
+  def __init__(self, database="example", host="db", user="root", password_file=None):
     pf = open(password_file, 'r')
-    self.connection = mysql.connector.connect(
+    self.connection = mariadb.connect(
       user=user,
       password=pf.read(),
       host=host, # name of the mysql service as set in the docker compose file
@@ -37,23 +37,26 @@ class DBManager:
 app = Flask(__name__)
 conn = None
 
-@app.route('/')
-def listBlog():
+def get_db():
   global conn
   if not conn:
     conn = DBManager(password_file='/run/secrets/db-password')
     conn.populate_db()
+
+  return conn
+
+@app.route('/', methods=['GET'])
+def list_titles():
+  conn = get_db()
   titles = conn.query_titles()
   response = ''
   for title in titles:
     response = response  + '<h2>   Article  ' + title + '</h2>'
   return response
 
-@app.route('/<int:title_id>')
-def getTitle(title_id):
-  global conn
-  if not conn:
-    conn = DBManager(password_file='/run/secrets/db-password')
+@app.route('/<int:title_id>', methods=['GET'])
+def get_title(title_id):
+  conn = get_db()
   title = conn.get_title(id=title_id)
   response = f"<h1> Article - {title} </h1>"
   return response

@@ -84,11 +84,15 @@ alb_dns_name = "ecs-alb-<account-id>.<region-id>.elb.amazonaws.com"
 
 2. ECS Task Version `20` becomes `inactive`
 
+![Screenshot 2024-09-30 at 14 44 13](https://github.com/user-attachments/assets/b783bd4f-fbcf-41a2-ad37-cad6bb66692d)
+
 ![Screenshot 2024-09-30 at 12 19 18](https://github.com/user-attachments/assets/f0dd834a-258c-4558-876e-4827bb92b1a4)
 
 ![Screenshot 2024-09-30 at 12 19 39](https://github.com/user-attachments/assets/ce0aa9b1-5a77-4d91-b21f-a3f9180668c4)
 
 ### After
+
+![Screenshot 2024-09-30 at 14 46 16](https://github.com/user-attachments/assets/5978340b-a7a7-4a9b-8cd2-b1e0818cc344)
 
 ![Screenshot 2024-09-30 at 12 22 01](https://github.com/user-attachments/assets/d2bcc2c4-ca9c-491c-a8c5-6dccccef6c91)
 

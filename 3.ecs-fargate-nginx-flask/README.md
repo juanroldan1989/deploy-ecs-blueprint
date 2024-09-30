@@ -2,15 +2,6 @@
 
 ![Screenshot 2024-09-30 at 12 28 13](https://github.com/user-attachments/assets/20bef5c8-8723-40b9-92be-be8427a8ee5e)
 
-## References
-
-- WSGI (Web Server Gateway Interface): `gunicorn`
-
-- https://github.com/docker/awesome-compose/tree/master/nginx-wsgi-flask
-
-- AWS Graphical description:
-  https://containersonaws.com/pattern/nginx-reverse-proxy-sidecar-ecs-fargate-task
-
 ## Docker Compose
 
 ```ruby
@@ -180,3 +171,14 @@ Transfer/sec:    132.70KB
 ```
 
 ![Screenshot 2024-09-30 at 13 33 36](https://github.com/user-attachments/assets/160b9f43-e588-4c50-a015-ff5e8ceaf430)
+
+## References
+
+- WSGI (Web Server Gateway Interface): `gunicorn`
+
+- https://github.com/docker/awesome-compose/tree/master/nginx-wsgi-flask
+
+- AWS Graphical description:
+  https://containersonaws.com/pattern/nginx-reverse-proxy-sidecar-ecs-fargate-task
+
+- https://reflectoring.io/upstream-downstream/

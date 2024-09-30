@@ -31,7 +31,30 @@ $ docker build -t juanroldan1989/flask-app .
 $ docker push juanroldan1989/flask-app:latest
 ```
 
-## ECS Service
+## Provision Infrascture
+
+1. Change dir to a project `ecs-fargate-nginx-flask`
+2. Run commands:
+
+```ruby
+$ terraform init
+$ terraform apply
+```
+
+3. Check `output` section
+
+```ruby
+alb_dns_name = "ecs-alb-<account-id>.<region-id>.elb.amazonaws.com"
+```
+
+4. Available endpoints are:
+
+- `/`
+- `/info`
+- `cache-me`
+- `health-check`
+
+## ECS Service (update/deployment)
 
 ![Screenshot 2024-09-30 at 12 55 06](https://github.com/user-attachments/assets/f258d3fb-09d2-4e01-b64b-9ebc1c42dcdf)
 
@@ -97,3 +120,26 @@ https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_redirect
 ### `proxy_redirect default;` on `/info` location
 
 ![Screenshot 2024-09-30 at 12 25 49](https://github.com/user-attachments/assets/ee766562-b084-456a-a035-e0915fcc8f46)
+
+## Load Testing
+
+```ruby
+$ brew install wrk
+```
+
+### Flask App - `/` endpoint
+
+```ruby
+$ wrk -t4 -c10000 -d300s http://ecs-alb-1596587575.us-east-1.elb.amazonaws.com/
+Running 5m test @ http://ecs-alb-1596587575.us-east-1.elb.amazonaws.com/
+  4 threads and 10000 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   460.80ms   57.85ms   1.21s    85.19%
+    Req/Sec   134.03     58.38   570.00     71.51%
+  159965 requests in 5.00m, 25.48MB read
+  Socket errors: connect 9754, read 0, write 0, timeout 0
+Requests/sec:    533.07
+Transfer/sec:     86.94KB
+```
+
+### Flask App - `/info` endpoint

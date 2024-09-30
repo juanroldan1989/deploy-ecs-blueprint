@@ -2,9 +2,36 @@
 
 Reference: https://spacelift.io/blog/terraform-ecs
 
-- List of components to be deployed
-- Steps for deployment
-- Blueprint should work with any Docker Image
+## ECS (FARGATE) Nginx
+
+## Service AutoScaling
+
+![Screenshot 2024-09-27 at 20 56 26](https://github.com/user-attachments/assets/863f879d-0460-4e1e-b03c-db883ea49283)
+
+## ECS (FARGATE) Nginx + WSGI + Flask App
+
+![Screenshot 2024-09-30 at 12 28 13](https://github.com/user-attachments/assets/20bef5c8-8723-40b9-92be-be8427a8ee5e)
+
+1. Change dir to a project `ecs-fargate-nginx-flask`
+2. Run commands:
+
+```ruby
+$ terraform init
+$ terraform apply
+```
+
+3. Check `output` section
+
+```ruby
+alb_dns_name = "ecs-alb-<account-id>.<region-id>.elb.amazonaws.com"
+```
+
+4. Available endpoints are:
+
+- `/`
+- `/info`
+- `cache-me`
+- `health-check`
 
 ## Showcase ECS Working modes
 
@@ -86,12 +113,6 @@ Running 1m test @ http://ecs-alb-1948815992.us-east-1.elb.amazonaws.com/
 Requests/sec:   1345.29
 Transfer/sec:      1.09MB
 ```
-
-# AWS ECS (FARGATE)
-
-## AutoScaling
-
-![Screenshot 2024-09-27 at 20 56 26](https://github.com/user-attachments/assets/863f879d-0460-4e1e-b03c-db883ea49283)
 
 ## Chaos Engineering
 

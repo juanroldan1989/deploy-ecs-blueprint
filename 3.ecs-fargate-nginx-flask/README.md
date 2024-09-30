@@ -143,7 +143,7 @@ Requests/sec:    533.07
 Transfer/sec:     86.94KB
 ```
 
-![Screenshot 2024-09-30 at 13 08 44](https://github.com/user-attachments/assets/f0bba198-b784-4163-9f0c-6df8aeb1d9b1)
+![Screenshot 2024-09-30 at 13 34 56](https://github.com/user-attachments/assets/cab6b6f4-af91-442f-aac4-9502c483d898)
 
 ### Flask App - `/info` endpoint
 

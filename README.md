@@ -1,6 +1,9 @@
 # Deploy ECS Blueprint
 
-Reference: https://spacelift.io/blog/terraform-ecs
+Reference:
+
+- https://spacelift.io/blog/terraform-ecs
+- https://github.com/docker/awesome-compose
 
 ## [ECS (FARGATE) Nginx](https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/2.ecs-fargate-nginx)
 
@@ -12,21 +15,14 @@ Reference: https://spacelift.io/blog/terraform-ecs
 
 ![Screenshot 2024-09-30 at 12 28 13](https://github.com/user-attachments/assets/20bef5c8-8723-40b9-92be-be8427a8ee5e)
 
-- Pipeline integrated within `Github Actions`
-- Infrastructure provisioned through `Terraform`
-- Load Testing performed through `wrk` on all endpoints
+- 🟡 Pipeline integrated within `Github Actions`
+- 🟢 Infrastructure provisioned through `Terraform`
+- 🟡 `Terraform` State stored in `S3`
+- 🟢 Load Testing performed through `wrk` tool on endpoints
 
-## Showcase ECS Working modes
+## Work in progress
 
-- EC2: Scenarios where works best. Pros & Cons.
-- FARGATE: Scenarios where works best. Pros & Cons.
-
-## Showcase ECS Service/Task adjustments for different applications
-
-1. Single Python App without database.
-2. Single Python App with database.
-
-## Build Pipeline
+### Pipeline
 
 1. Changes are pushed into `main` branch (via pull-request)
 2. `ECR` is created if it doesn't exist already.
@@ -47,24 +43,30 @@ resource "aws_ecr_repository" "image_repo" {
 ```
 
 3. Docker `build` is triggered.
-4. New Docker image is `tagged` and `pushed`.
-5. `terraform apply` command is triggered using new `IMAGE_TAG` - https://skundunotes.com/2024/05/06/continuous-deployment-of-amazon-ecs-service-using-terraform-and-github-actions/
+4. New Docker image/s is/are `tagged` and `pushed`.
+5. Docker images are scanned.
+6. Infra Costs analisis is provided within `Pull Request`
 
-## Setup Terraform `backend`
+- https://github.com/kunduso/add-aws-ecr-ecs-fargate/blob/main/.github/workflows/terraform.yml#L70
+- https://github.com/infracost/actions/blob/master/README.md
+
+7. `terraform apply` command is triggered using new `IMAGE_TAG` - https://skundunotes.com/2024/05/06/continuous-deployment-of-amazon-ecs-service-using-terraform-and-github-actions/
+
+### Add Terraform `backend`
 
 https://github.com/kunduso/add-aws-ecr-ecs-fargate/blob/main/deploy/backend.tf
 
-```
+```ruby
 terraform {
   backend "s3" {
-    bucket  = "kunduso-terraform-remote-bucket"
+    bucket  = "ecs-app-XXX"
     encrypt = true
-    key     = "tf/add-aws-ecr-ecs-fargate/deploy-ecs.tfstate"
-    region  = "us-east-2"
+    key     = "terraform-state/terraform.tfstate"
+    region  = "us-east-1"
   }
 }
 ```
 
-## Chaos Engineering
+### Chaos Engineering
 
 https://medium.com/aws-arena/aws-fargate-chaos-monkey-78faa8923af6

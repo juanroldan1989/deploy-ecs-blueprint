@@ -41,7 +41,7 @@ resource "aws_ecs_task_definition" "custom_nginx_flask_task" {
       essential   = true
       networkMode = "awsvpc"
       environment = [
-        { "name" : "DB_HOST", "value" : "db" },
+        { "name" : "DB_HOST", "value" : "localhost" }, # For container in the same ECS (Fargate) Task, use `localhost`
         { "name" : "DB_USER", "value" : "root" },
         { "name" : "DB_NAME", "value" : "example" },
       ]
@@ -82,7 +82,7 @@ resource "aws_ecs_task_definition" "custom_nginx_flask_task" {
         { "name" : "MYSQL_ROOT_PASSWORD", "value" : "db-78n9n" }
       ]
       healthCheck = {
-        command     = ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 --password='db-78n9n' --silent || exit 1"]
+        command     = ["CMD-SHELL", "mysqladmin ping -h localhost --password='db-78n9n' --silent || exit 1"]
         interval    = 10
         retries     = 3
         timeout     = 10

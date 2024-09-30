@@ -5,8 +5,9 @@ import mysql.connector as mariadb
 class DBManager:
   def __init__(self, host="db", database="example", user="root", password_file=None):
     try:
-      with open(password_file, 'r') as pf:
-        password = pf.read().strip()
+      pf = open(password_file, 'r')
+      password = pf.read().strip()
+      pf.close()
     except FileNotFoundError:
       # TODO: implement KMS to provision DB password - "${aws::resource::kms}"
       password = 'db-78n9n'
@@ -18,7 +19,6 @@ class DBManager:
       password=password,
       auth_plugin='mysql_native_password'
     )
-    pf.close()
     self.cursor = self.connection.cursor()
 
   def populate_db(self):

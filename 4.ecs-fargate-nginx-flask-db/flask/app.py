@@ -60,3 +60,7 @@ def get_article(title_id):
   title = conn.get_article(id=title_id)
   response = f"<h1> Article - {title} </h1>"
   return response
+
+@app.route('/flask-health-check')
+def flask_health_check():
+	return "success"

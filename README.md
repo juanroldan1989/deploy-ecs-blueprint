@@ -42,9 +42,17 @@ Each project represents a Continuous Deployment to AWS Fargate from GitHub using
 
 - You only ever pay for what your task uses, no more paying for EC2 capacity that goes unused.
 
-## [ECS (EC2) Nginx](https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/2.ecs-fargate-nginx)
+<hr>
 
-## [ECS (FARGATE) Nginx](https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/2.ecs-fargate-nginx)
+## ECS (EC2) Nginx
+
+https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/1.ecs-ec2-nginx
+
+![Screenshot 2024-10-01 at 12 14 30](https://github.com/user-attachments/assets/ddf2ccc4-74ab-4ba1-9074-524ebfa0a078)
+
+## ECS (FARGATE) Nginx
+
+https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/2.ecs-fargate-nginx
 
 ### Service AutoScaling
 
@@ -52,7 +60,9 @@ Each project represents a Continuous Deployment to AWS Fargate from GitHub using
 
 ![Screenshot 2024-09-27 at 20 56 26](https://github.com/user-attachments/assets/863f879d-0460-4e1e-b03c-db883ea49283)
 
-## [ECS (FARGATE) Nginx + WSGI + Flask App](https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/3.ecs-fargate-nginx-flask)
+## ECS (FARGATE) Nginx + WSGI + Flask App
+
+https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/3.ecs-fargate-nginx-flask
 
 ![Screenshot 2024-09-30 at 12 28 13](https://github.com/user-attachments/assets/20bef5c8-8723-40b9-92be-be8427a8ee5e)
 
@@ -61,7 +71,9 @@ Each project represents a Continuous Deployment to AWS Fargate from GitHub using
 - 🟡 `Terraform` State stored in `S3` - **work in progress**
 - 🟢 Load Testing performed through `wrk` tool on endpoints
 
-## [ECS (FARGATE) Nginx + WSGI + Flask App + DB](https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/4.ecs-fargate-nginx-flask-db)
+## ECS (FARGATE) Nginx + WSGI + Flask App + DB
+
+https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/4.ecs-fargate-nginx-flask-db
 
 ![Screenshot 2024-09-30 at 12 28 13](https://github.com/user-attachments/assets/20bef5c8-8723-40b9-92be-be8427a8ee5e)
 

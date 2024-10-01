@@ -1,10 +1,48 @@
-# Deploy ECS Blueprint
+# ECS Build/Push/Deployment Blueprint
+
+## AWS Key Components
+
+Each project code leverages these **AWS** services through **Terraform** to create an automated deployment pipeline for your application, ensuring scalability, reliability, and security throughout the process.
+
+1. **Amazon Virtual Private Cloud (VPC):** Is a secure, isolated private cloud hosted.
+2. **Amazon Subnets:** Public and private subnets within the VPC for isolating resources based on security requirements.
+3. **Amazon Internet Gateway (IGW):** Provides internet connectivity to instances in the public subnets.
+4. **Amazon NAT Gateway:** Enables instances in the private subnets to initiate outbound traffic to the internet while preventing incoming connections.
+5. **Amazon Security Group (SG):** Defines inbound and outbound traffic rules to control network access to instances.
+6. **Amazon Application Load Balancer (ALB):** Distributes incoming application traffic across multiple targets, such as Amazon ECS containers.
+7. **Amazon ECS Cluster:** Manages containers using the AWS Fargate launch type, abstracting the underlying infrastructure.
+8. **Amazon ECS Task Definition:** Specifies the parameters for running containers within an Amazon ECS service.
+9. **Amazon Elastic Container Registry (ECR):** A fully managed Docker container registry that stores, manages, and deploys container images.
+10. **Amazon IAM Roles and Policies:** Define permissions for different services, allowing them to interact securely.
+
+## Project Workflow
+
+Each project represents a Continuous Deployment to AWS Fargate from GitHub using Terraform:
+
+1. **VPC and Networking:** Create a VPC with specified CIDR blocks, public and private subnets across availability zones, an IGW for public subnet communication, configure NAT Gateway for private subnet outbound communication and set up route tables for public and private subnets.
+2. **Security Group:** Create a security group for the ALB. Allow incoming traffic on ports 80 and 5000 for the ALB. Allow all outbound traffic.
+3. **Application Load Balancer (ALB):** Create an ALB with specified attributes and subnets and set up ALB target groups and listeners.
+4. **Amazon ECS Cluster and Task Definition:** Create an ECS cluster, define an ECS task definition for the application, configure the container definition for the Flask app, an IAM policy for ECS task execution.
 
 ## Pricing
 
-- With the EC2 launch, type billing is based on the cost of the underlying EC2 instances. This allows you to optimize price by taking advantage of billing models such as spot instances (bid a low price for an instance), or reserved instances (get a flat discount for committing to an instance for a certain period). However, it is your responsibility to make sure that your containers are densely packed onto instances to get the best use out of them, otherwise, you will be wasting money.
+### ECS `EC2` launch mode
 
-- With the AWS Fargate launch type billing is based on how many CPU cores, and gigabytes of memory your task requires, per second. You only ever pay for what your task uses, no more paying for EC2 capacity that goes unused.
+- Billing is based on the cost of the underlying `EC2 instances`.
+
+- This allows you to optimize price by taking advantage of billing models such as:
+- `spot instances` (bid a low price for an instance)
+- `reserved instances` (get a flat discount for committing to an instance for a certain period).
+
+- However, it is your responsibility to make sure that your containers are densely packed onto instances to get the best use out of them, otherwise, you will be wasting money.
+
+### ECS `Fargate` launch mode
+
+- Billing is based on how many `CPU` cores, and gigabytes of `memory` your task requires, per second.
+
+- You only ever pay for what your task uses, no more paying for EC2 capacity that goes unused.
+
+## [ECS (EC2) Nginx](https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/2.ecs-fargate-nginx)
 
 ## [ECS (FARGATE) Nginx](https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/2.ecs-fargate-nginx)
 
@@ -18,12 +56,22 @@
 
 ![Screenshot 2024-09-30 at 12 28 13](https://github.com/user-attachments/assets/20bef5c8-8723-40b9-92be-be8427a8ee5e)
 
-- 🟡 Pipeline integrated within `Github Actions`
+- 🟡 Pipeline integrated within `Github Actions` - **work in progress**
 - 🟢 Infrastructure provisioned through `Terraform`
-- 🟡 `Terraform` State stored in `S3`
+- 🟡 `Terraform` State stored in `S3` - **work in progress**
 - 🟢 Load Testing performed through `wrk` tool on endpoints
 
-## Work in progress
+## [ECS (FARGATE) Nginx + WSGI + Flask App + DB](https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/4.ecs-fargate-nginx-flask-db)
+
+![Screenshot 2024-09-30 at 12 28 13](https://github.com/user-attachments/assets/20bef5c8-8723-40b9-92be-be8427a8ee5e)
+
+- 🟡 Pipeline integrated within `Github Actions` - **work in progress**
+- 🟢 Infrastructure provisioned through `Terraform`
+- 🟢 `MariaDB` database instance added within ECS Fargate Task.
+- 🟡 `Terraform` State stored in `S3` - **work in progress**
+- 🟢 Load Testing performed through `wrk` tool on endpoints
+
+## Further improvements across projects
 
 ### Pipeline
 

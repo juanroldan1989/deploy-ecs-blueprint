@@ -1,6 +1,30 @@
-# ECS Build/Push/Deployment Blueprint
+<img src="https://github.com/juanroldan1989/deploy-ecs-blueprint/blob/main/aws-ecs-logo.png" alt="juanroldan1989 ecs-deploy-blueprint">
 
-## AWS Key Components
+<h4 align="center">Github Actions integration | Docker images build/tag/push worklows | Infrastructure by Terraform </h4>
+
+<p align="center">
+  <a href="https://github.com/juanroldan1989/deploy-ecs-blueprint/commits/main">
+  <img src="https://img.shields.io/github/last-commit/juanroldan1989/deploy-ecs-blueprint.svg?style=flat-square&logo=github&logoColor=white" alt="GitHub last commit">
+  <a href="https://github.com/juanroldan1989/deploy-ecs-blueprint/issues">
+  <img src="https://img.shields.io/github/issues-raw/juanroldan1989/deploy-ecs-blueprint.svg?style=flat-square&logo=github&logoColor=white" alt="GitHub issues">
+  <a href="https://github.com/juanroldan1989/deploy-ecs-blueprint/pulls">
+  <img src="https://img.shields.io/github/issues-pr-raw/juanroldan1989/deploy-ecs-blueprint.svg?style=flat-square&logo=github&logoColor=white" alt="GitHub pull requests">
+  <a href="https://github.com/juanroldan1989/deploy-ecs-blueprint/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg">
+  </a>
+</p>
+
+<p align="center">
+  <a href="#aws_key_components">AWS Key Components</a> •
+  <a href="#project_workflow">Project Workflow</a> •
+  <a href="#pricing">Pricing</a> •
+  <a href="#blueprints">Blueprints</a> •
+  <a href="#further_improvements">Further Improvements</a> •
+  <a href="#references">References</a>  •
+  <a href="#contribute">Contribute</a>
+</p>
+
+# AWS Key Components
 
 Each project code leverages these **AWS** services through **Terraform** to create an automated deployment pipeline for your application, ensuring scalability, reliability, and security throughout the process.
 
@@ -15,7 +39,7 @@ Each project code leverages these **AWS** services through **Terraform** to crea
 9. **Amazon Elastic Container Registry (ECR):** A fully managed Docker container registry that stores, manages, and deploys container images.
 10. **Amazon IAM Roles and Policies:** Define permissions for different services, allowing them to interact securely.
 
-## Project Workflow
+# Project Workflow
 
 Each project represents a Continuous Deployment to AWS Fargate from GitHub using Terraform:
 
@@ -24,9 +48,9 @@ Each project represents a Continuous Deployment to AWS Fargate from GitHub using
 3. **Application Load Balancer (ALB):** Create an ALB with specified attributes and subnets and set up ALB target groups and listeners.
 4. **Amazon ECS Cluster and Task Definition:** Create an ECS cluster, define an ECS task definition for the application, configure the container definition for the Flask app, an IAM policy for ECS task execution.
 
-## Pricing
+# Pricing
 
-### ECS `EC2` launch mode
+## ECS `EC2` launch mode
 
 - Billing is based on the cost of the underlying `EC2 instances`.
 
@@ -36,13 +60,15 @@ Each project represents a Continuous Deployment to AWS Fargate from GitHub using
 
 - However, it is your responsibility to make sure that your containers are densely packed onto instances to get the best use out of them, otherwise, you will be wasting money.
 
-### ECS `Fargate` launch mode
+## ECS `Fargate` launch mode
 
 - Billing is based on how many `CPU` cores, and gigabytes of `memory` your task requires, per second.
 
 - You only ever pay for what your task uses, no more paying for EC2 capacity that goes unused.
 
 <hr>
+
+# Blueprints
 
 ## ECS (EC2) Nginx
 
@@ -83,9 +109,9 @@ https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/4.ecs-fargate-n
 - 🟡 `Terraform` State stored in `S3` - **work in progress**
 - 🟢 Load Testing performed through `wrk` tool on endpoints
 
-## Further improvements across projects
+# Further improvements
 
-### Pipeline
+## Pipeline
 
 1. Changes are pushed into `main` branch (via pull-request)
 2. `ECR` is created if it doesn't exist already.
@@ -115,7 +141,7 @@ resource "aws_ecr_repository" "image_repo" {
 
 7. `terraform apply` command is triggered using new `IMAGE_TAG` - https://skundunotes.com/2024/05/06/continuous-deployment-of-amazon-ecs-service-using-terraform-and-github-actions/
 
-### Add Terraform `backend`
+## Terraform `backend`
 
 https://github.com/kunduso/add-aws-ecr-ecs-fargate/blob/main/deploy/backend.tf
 
@@ -130,11 +156,24 @@ terraform {
 }
 ```
 
-### Chaos Engineering
+## Chaos Engineering
 
-https://medium.com/aws-arena/aws-fargate-chaos-monkey-78faa8923af6
+- For this section I'm interested in implementing a module to "trigger chaos on command".
 
-## References
+- This way it'd be possible to test how each application reacts and recovers from failure scenarios.
+
+# References
 
 - https://spacelift.io/blog/terraform-ecs
 - https://github.com/docker/awesome-compose
+- https://medium.com/aws-arena/aws-fargate-chaos-monkey-78faa8923af6
+
+# Contribute
+
+Got **something interesting** you'd like to **add or change**? Please feel free to [Open a Pull Request](https://github.com/juanroldan1989/deploy-ecs-blueprint/pulls)
+
+If you want to say **thank you** and/or support the active development of `ECS Deployment Blueprint`:
+
+1. Add a [GitHub Star](https://github.com/juanroldan1989/deploy-ecs-blueprint/stargazers) to the project.
+2. Tweet about the project [on your Twitter](https://twitter.com/intent/tweet?text=Hey%20I've%20just%20discovered%20this%20cool%20app%20on%20Github%20by%20@JhonnyDaNiro%20-%20Deploy%20ECS%20Blueprint&url=https://github.com/juanroldan1989/deploy-ecs-blueprint/&via=Github).
+3. Write a review or tutorial on [Medium](https://medium.com), [Dev.to](https://dev.to) or personal blog.

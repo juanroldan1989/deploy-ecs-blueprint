@@ -70,23 +70,19 @@ Each project represents a Continuous Deployment to AWS Fargate from GitHub using
 
 # Blueprints
 
-## ECS (EC2) Nginx
+## 1. ECS (EC2) Nginx
 
 https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/1.ecs-ec2-nginx
 
 ![Screenshot 2024-10-01 at 12 14 30](https://github.com/user-attachments/assets/ddf2ccc4-74ab-4ba1-9074-524ebfa0a078)
 
-## ECS (FARGATE) Nginx
+## 2. ECS (Fargate) Nginx
 
 https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/2.ecs-fargate-nginx
 
-### Service AutoScaling
+![Screenshot 2024-10-03 at 11 55 11](https://github.com/user-attachments/assets/30cbf6f5-2bcb-445c-9364-cf50f9b4a268)
 
-![Screenshot 2024-09-30 at 20 19 25](https://github.com/user-attachments/assets/ecff068b-8af2-47ff-a18d-798d63f033e4)
-
-![Screenshot 2024-09-27 at 20 56 26](https://github.com/user-attachments/assets/863f879d-0460-4e1e-b03c-db883ea49283)
-
-## ECS (FARGATE) Nginx + WSGI + Flask App
+## 3. ECS (FARGATE) Nginx + WSGI + Flask App
 
 https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/3.ecs-fargate-nginx-flask
 
@@ -97,7 +93,7 @@ https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/3.ecs-fargate-n
 - 🟡 `Terraform` State stored in `S3` - **work in progress**
 - 🟢 Load Testing performed through `wrk` tool on endpoints
 
-## ECS (FARGATE) Nginx + WSGI + Flask App + DB
+## 4. ECS (FARGATE) Nginx + WSGI + Flask App + DB
 
 https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/4.ecs-fargate-nginx-flask-db
 

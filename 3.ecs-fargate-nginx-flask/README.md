@@ -1,4 +1,4 @@
-# ECS (FARGATE) Nginx + WSGI + Flask App
+# ECS (Fargate) Nginx + WSGI + Flask App
 
 ![Screenshot 2024-09-30 at 12 28 13](https://github.com/user-attachments/assets/20bef5c8-8723-40b9-92be-be8427a8ee5e)
 
@@ -59,6 +59,14 @@ alb_dns_name = "ecs-alb-<account-id>.<region-id>.elb.amazonaws.com"
 - `GET /cache-me`
 - `GET /health-check`
 
+5. Delete infrastructure
+
+To remove all infrastructure managed by Terraform:
+
+```
+$ terraform destroy
+```
+
 ## ECS Service (update/deployment)
 
 ![Screenshot 2024-09-30 at 12 55 06](https://github.com/user-attachments/assets/f258d3fb-09d2-4e01-b64b-9ebc1c42dcdf)
@@ -113,6 +121,9 @@ $ terraform apply --auto-approve -replace="aws_ecs_task_definition.custom_nginx_
 ## Nginx
 
 ### `cache-me` endpoint
+
+- `MISS` type request highlighted
+- `HIT` type requests following it afterwards
 
 ![Screenshot 2024-09-30 at 12 13 33](https://github.com/user-attachments/assets/9cf8d577-56e3-477f-9430-1dd2809f81c8)
 

@@ -1,4 +1,4 @@
-# ECS (FARGATE) Nginx + WSGI + Flask App + Database
+# ECS (Fargate) Nginx + WSGI + Flask App + Database
 
 ![Screenshot 2024-09-30 at 12 28 13](https://github.com/user-attachments/assets/20bef5c8-8723-40b9-92be-be8427a8ee5e)
 
@@ -61,6 +61,14 @@ alb_dns_name = "ecs-alb-<account-id>.<region-id>.elb.amazonaws.com"
 - `GET /<article-id>` -> Requests an specific article
 
 ![Screenshot 2024-09-30 at 22 25 58](https://github.com/user-attachments/assets/52dab504-2f0a-4db1-8884-e383e9771af3)
+
+5. Delete infrastructure
+
+To remove all infrastructure managed by Terraform:
+
+```
+$ terraform destroy
+```
 
 ## ECS Service (update/deployment)
 

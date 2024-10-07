@@ -2,12 +2,16 @@ name: Deployment for App 1 - ECS (EC2) Nginx App
 
 on:
   push:
+    branches:
+      - main
+      - develop
     paths:
       - "1.ecs-ec2-nginx"
 
 env:
-  AWS_REGION: us-east-1
-  ECR_REGISTRY: 542979624611.dkr.ecr.us-east-1.amazonaws.com
+  AWS_REGION: <region-id>
+  ECR_REGISTRY: <account-id>.dkr.ecr.<region-id>.amazonaws.com
+  APP_NAME: App 1 - ECS (EC2) Nginx
   IMAGE_TAG: ${{ github.sha }}
 
 permissions:
@@ -17,6 +21,9 @@ jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .1.ecs-ec2-nginx/infra
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
@@ -24,13 +31,24 @@ jobs:
       - name: Run Tests
         run: echo "Running tests ..."
 
-  push:
+  build-and-push:
     needs: [test]
-    name: Build/Push Docker image
+    name: Build Docker image
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .1.ecs-ec2-nginx/infra
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set ECR repository URI based on branch
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            echo "REPOSITORY_URI=<account-id>.dkr.ecr.<region-id>.amazonaws.com/app-1-ecr-dev" >> $GITHUB_ENV
+          else
+            echo "REPOSITORY_URI=<account-id>.dkr.ecr.<region-id>.amazonaws.com/app-1-ecr-prod" >> $GITHUB_ENV
+          fi
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -39,17 +57,47 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: "[Flask] Login, Tag and Push Docker image"
+      - name: "[Nginx] Login, Build and Tag Docker image"
         run: |
           aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
-          docker build -t ${{ env.ECR_REGISTRY }}/app-1-flask-image:${{ env.IMAGE_TAG }} flask/app
-          docker push ${{ env.ECR_REGISTRY }}/app-1-flask-image:${{ env.IMAGE_TAG }}
+          docker build -t ${{ env.REPOSITORY_URI }}:${{ env.IMAGE_TAG }} nginx/app
 
-      - name: "[Nginx] Login, Tag and Push Docker image"
-        run: |
-          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
-          docker build -t ${{ env.ECR_REGISTRY }}/app-1-nginx-image:${{ env.IMAGE_TAG }} nginx/app
-          docker push ${{ env.ECR_REGISTRY }}/app-1-nginx-image:${{ env.IMAGE_TAG }}
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REPOSITORY_URI }}:${{ env.IMAGE_TAG }}
+          format: "table"
+          severity: "CRITICAL,HIGH"
+          exit-code: 1
+
+      - name: Check Docker best practices with Dockle
+        uses: erzz/dockle-action@v1
+        with:
+          image: ${{ env.REPOSITORY_URI }}:${{ env.IMAGE_TAG }}
+          failure-threshold: fatal
+          exit-code: 1
+
+      - name: Push to ECR
+        if: success()
+        run: docker push ${{ env.REPOSITORY_URI }}:${{ env.IMAGE_TAG }}
+
+      - name: Notify Slack on success
+        if: success()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_COLOR: "#36A64F"
+          SLACK_TITLE: "Security Scan Completed"
+          SLACK_MESSAGE: "Security scans completed successfully. All checks passed."
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_COLOR: "danger"
+          SLACK_TITLE: "Build or Security Scan Failed"
+          SLACK_MESSAGE: "A critical error occurred in the build or security scan process. Please check GitHub Actions logs for more details."
 
   deploy:
     name: "Terraform deploy"
@@ -61,14 +109,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Check if triggered by main branch
-        id: check_branch
-        run: |
-          if [[ "${{ github.event.workflow_run.head_branch }}" != "main" ]]; then
-            echo "This workflow was not triggered by the main branch. Exiting."
-            exit 1
-          fi
 
       - name: Setup Terraform with specified version on the runner
         uses: hashicorp/setup-terraform@v3
@@ -88,18 +128,41 @@ jobs:
           terraform init
           terraform apply --auto-approve
 
+      - name: Set Slack `message` and `title` on success
+        if: success()
+        run: |
+          echo "SLACK_COLOR=good" >> $GITHUB_ENV
+          echo "SLACK_TITLE_SUFFIX=(${{ github.ref_name }}) | (${{ env.APP_NAME }})" >> $GITHUB_ENV
+          echo "SLACK_MESSAGE=Deployment succedded. More details within Github Actions."
+
+      - name: Set Slack message and title on failure
+        if: failure()
+        run: |
+          echo "SLACK_COLOR=danger" >> $GITHUB_ENV
+          echo "SLACK_TITLE_SUFFIX=(${{ github.ref_name }}) | (${{ env.APP_NAME }})" >> $GITHUB_ENV
+          echo "SLACK_MESSAGE=Deployment failed. More details within Github Actions."
+
+      - name: Setup Slack variables
+        run: |
+          if [[ ${{ github.ref }} == 'refs/heads/develop' ]]; then
+            echo "SLACK_TITLE_PREFIX=Develop" >> $GITHUB_ENV
+          else
+            echo "SLACK_TITLE_PREFIX=Production" >> $GITHUB_ENV
+          fi
+
   notify:
-    needs: [test, push, deploy]
+    needs: [test, build-and-push, deploy]
     name: Notify via Slack
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
 
-      - name: Send notifications
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          channel-id: <your-slack-channel-id>
-          slack-message: "App 1 - Deployment Stats"
+      - name: Send notification about deployment status
+        if: always()
+        uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_COLOR: ${{ env.SLACK_COLOR }}
+          SLACK_TITLE: "${{ env.SLACK_TITLE_PREFIX }} ${{ env.SLACK_TITLE_SUFFIX }}"
+          SLACK_MESSAGE: ${{ env.SLACK_MESSAGE }}

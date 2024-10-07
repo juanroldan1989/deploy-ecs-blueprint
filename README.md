@@ -109,7 +109,7 @@ https://github.com/juanroldan1989/deploy-ecs-blueprint/tree/main/4.ecs-fargate-n
 
 ## Pipeline
 
-1. Changes are pushed into `main` branch (via pull-request)
+1. Changes are pushed into `main` or `develop` branch.
 2. `ECR` is created if it doesn't exist already.
 
 ```ruby
@@ -129,7 +129,14 @@ resource "aws_ecr_repository" "image_repo" {
 
 3. Docker `build` is triggered.
 4. New Docker image/s is/are `tagged` and `pushed`.
-5. Docker images are scanned.
+5. Docker images are scanned:
+
+- Trivy
+  Trivy checks for known vulnerabilities in the container image, scanning OS packages and application libraries. The workflow fails if HIGH or CRITICAL vulnerabilities are detected.
+
+- Dockle
+  Dockle checks if the Dockerfile follows best practices. It verifies that the container is not running as root, ensures there are no unnecessary files or directories, and more.
+
 6. Infra Costs analisis is provided within `Pull Request`
 
 - https://github.com/kunduso/add-aws-ecr-ecs-fargate/blob/main/.github/workflows/terraform.yml#L70
